@@ -1,0 +1,35 @@
+{
+  "name": "@ellx/router",
+  "version": "0.1.0",
+  "description": "Router for Ellx apps",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "ava -v"
+  },
+  "ava": {
+    "files": [
+      "**/*.spec.js"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dmaevsky/ellx-app-router.git"
+  },
+  "keywords": [
+    "router",
+    "Ellx"
+  ],
+  "author": "Ellxoft",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dmaevsky/ellx-app-router/issues"
+  },
+  "homepage": "https://github.com/dmaevsky/ellx-app-router#readme",
+  "dependencies": {
+    "tinyx": "^2.2.0"
+  },
+  "devDependencies": {
+    "ava": "^3.15.0"
+  }
+}
