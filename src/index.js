@@ -5,6 +5,7 @@ export default function makeRouter() {
   const sandboxed = window.location.origin === 'null';
 
   const currentPath = writable(getCurrentRoute());
+  let count = 0;
 
   function getBase() {
     const { href, pathname, search, hash } = window.location;
@@ -21,10 +22,9 @@ export default function makeRouter() {
   }
 
   const router = {
-    path: currentPath,
     async go(url) {
       await Promise.resolve();
-      if (currentPath.get() !== url) {
+      if (getCurrentRoute() !== url) {
         if (!sandboxed) window.history.pushState(null, '', url);
         else window.location.hash = url;
         currentPath.set(url);
@@ -32,16 +32,34 @@ export default function makeRouter() {
     },
     async replace(url) {
       await Promise.resolve();
-      if (currentPath.get() !== url) {
+      if (getCurrentRoute() !== url) {
         if (!sandboxed) window.history.replaceState(null, '', url);
         else window.location.hash = url;
         currentPath.set(url);
       }
+    },
+    path: {
+      subscribe: subscriber => {
+        const onPopState = () => currentPath.set(getCurrentRoute());
+        const onClick = handleClick(getBase(), router.go);
+
+        if (0 === count++) {
+          onPopState();
+          window.addEventListener('popstate', onPopState);
+          window.addEventListener('click', onClick);
+        }
+        const unsubscribe = currentPath.subscribe(subscriber);
+
+        return () => {
+          if (--count === 0) {
+            window.removeEventListener('popstate', onPopState);
+            window.removeEventListener('click', onClick);
+          }
+          unsubscribe();
+        };
+      }
     }
   }
-
-  window.onpopstate = () => currentPath.set(getCurrentRoute());
-  window.addEventListener('click', handleClick(getBase(), router.go));
 
   return router;
 }

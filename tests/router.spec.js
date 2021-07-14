@@ -3,7 +3,6 @@ import makeRouter from '../src/index.js';
 
 const setState = (_1, _2, url) => {
   window.location = new URL(url, window.location);
-  window.onpopstate && window.onpopstate();
 }
 
 const initialUrl = 'http://web.site/initial/path';
@@ -15,6 +14,7 @@ global.window = {
     replaceState: setState
   },
   addEventListener: () => {},
+  removeEventListener: () => {},
 }
 
 const router = makeRouter();
