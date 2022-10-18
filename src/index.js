@@ -40,9 +40,6 @@ export default function makeRouter() {
     },
     path: {
       subscribe: subscriber => {
-        const onPopState = () => currentPath.set(getCurrentRoute());
-        const onClick = handleClick(getBase(), router.go);
-
         if (0 === count++) {
           onPopState();
           window.addEventListener('popstate', onPopState);
@@ -60,6 +57,9 @@ export default function makeRouter() {
       }
     }
   }
+
+  const onPopState = () => currentPath.set(getCurrentRoute());
+  const onClick = handleClick(getBase(), router.go);
 
   return router;
 }

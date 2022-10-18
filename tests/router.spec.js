@@ -19,13 +19,13 @@ global.window = {
 
 const router = makeRouter();
 
-test.cb('router', t => {
+test('router', t => new Promise(resolve => {
   let j = 0;
 
   const steps = [
     path => (t.is(path, '/initial/path'), router.go('/another/path')),
-    path => (t.is(path, '/another/path'), off(), t.end())
+    path => (t.is(path, '/another/path'), off(), resolve())
   ];
 
   const off = router.path.subscribe(path => steps[j++](path));
-});
+}));
